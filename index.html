@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hi, I'm Chad.</title>
+  <meta name="description" content="Chad Readey's portfolio site">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; padding: 0; font-size: 100%; line-height: 1.5; color: #555; background: #fff; font-family: 'Montserrat', sans-serif; }
+    h1, h2, h3 { margin-top: 1em; padding-top: 1em; line-height: 1.25; color: #333; }
+    h1 { font-size: 2.5rem; } h2 { font-size: 2rem; } h3 { font-size: 1.5rem; }
+    a { color: #782849; }
+
+    /* ---------- hero ---------- */
+    #particles-js { position: relative; background: linear-gradient(#4b134f, #b24244); display: flex; width: 100%; min-height: 100vh; background-size: cover; background-attachment: fixed; }
+    #particles-js canvas { width: 100% !important; height: 100vh !important; display: block; }
+    .header { z-index: 1; text-align: center; color: #fff; position: absolute; top: 50%; left: 50%; width: 90%; transform: translate(-50%, -50%); }
+    .header h1 { margin: 0; padding: 0; }
+    .header .site-title { display: block; line-height: 1; color: #fff; font-size: 80px; font-weight: 700; }
+    .header .site-description { display: block; line-height: 1; color: #fff; font-size: 36px; font-weight: 400; margin-top: 14px; }
+    .header-icons { display: flex; justify-content: center; margin-top: 28px; }
+    .header-icons .icon { color: #fff; width: 35px; height: 35px; font-size: 26px; display: grid; place-items: center; padding: 10px; margin: 5px; border-radius: 50%; border: 2px solid #fff; box-sizing: content-box; transition: all .5s; }
+    .header-icons .icon:hover { color: #782849; background: #fff; }
+    .header-links { margin: 14px; }
+    .header-links .link { color: #fff; text-decoration: none; font-size: 20px; margin: 10px; }
+    .down { position: absolute; bottom: 5%; width: 100%; display: block; font-size: 40px; color: #fff; text-align: center; cursor: pointer; z-index: 1; animation: pulse 1.3s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: .4; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-10px); } }
+
+    /* ---------- about ---------- */
+    #about { width: 80%; max-width: 960px; margin: 0 auto; }
+    .avatar { margin: 60px auto 10px; text-align: center; }
+    .avatar .initials { width: 200px; height: 200px; border-radius: 50%; margin: 0 auto; display: grid; place-items: center; font-size: 72px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #4b134f, #b24244); box-shadow: 0 8px 30px rgba(75,19,79,0.25); }
+    .user-details { text-align: center; margin: 5px auto; }
+    .user-details p { font-size: 17px; max-width: 760px; margin: 12px auto; }
+    .user { display: flex; flex-direction: row; justify-content: space-between; text-align: center; }
+    .tech { margin: 10px; flex: 1; }
+    .tech h2 { font-size: 1.7rem; margin-top: .4em; padding-top: .4em; }
+    .icons { color: #782849; font-size: 44px; display: flex; justify-content: center; gap: 22px; margin: 8px 0 12px; }
+    .icons i { line-height: 1; }
+    .user p { font-size: 15.5px; }
+
+    /* ---------- projects ---------- */
+    #projects { width: 80%; max-width: 960px; margin: 0 auto; }
+    #projects h1 { text-align: center; }
+    .user-projects { margin: 40px auto; display: flex; align-items: center; gap: 4%; }
+    .user-projects.flip { flex-direction: row-reverse; }
+    .user-projects .img { width: 48%; flex: 0 0 48%; }
+    .user-projects .img img, .user-projects .img .tile { width: 100%; height: auto; border-radius: 5px; display: block; }
+    .user-projects .tile { aspect-ratio: 16 / 10; border-radius: 5px; display: grid; place-items: center; color: #fff; font-size: 64px; position: relative; overflow: hidden; }
+    .user-projects .tile small { position: absolute; bottom: 12px; left: 14px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+    .user-projects .text { width: 48%; flex: 1; }
+    .user-projects h3 { margin-top: 0; padding-top: 0; }
+    .user-projects p { margin-right: 5px; }
+    .links { text-align: center; }
+    .project-link { display: inline-block; margin: 10px 4px; padding: 6px 14px; color: #782849; background: transparent; border: 1px solid #782849; border-radius: 10px; text-decoration: none; transition: all .3s ease-out; }
+    .project-link:hover { background: #782849; border-color: #782849; color: #fff; }
+    .pill { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #782849; border: 1px solid #782849; border-radius: 999px; padding: 2px 9px; vertical-align: middle; margin-left: 8px; }
+
+    /* ---------- footer ---------- */
+    .footer { background: #782849; padding: 14px 0; margin-top: 100px; text-align: center; color: #fff; }
+    .footer p { margin: 4px; }
+    .footer a { color: #fff; text-decoration: none; }
+
+    @media (max-width: 760px) {
+      .header .site-title { font-size: 48px; } .header .site-description { font-size: 22px; }
+      .user { flex-direction: column; }
+      .user-projects, .user-projects.flip { flex-direction: column; }
+      .user-projects .img, .user-projects .text { width: 100%; flex: 1 1 auto; }
+      #about, #projects { width: 90%; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="particles-js">
+  <div class="header">
+    <h1>
+      <span class="site-title">Chad Readey</span>
+      <span class="site-description">Data Scientist &amp; Systems Builder</span>
+    </h1>
+    <div class="header-icons">
+      <a aria-label="E-Mail" href="mailto:chadreadey@gmail.com"><i class="icon fas fa-envelope"></i></a>
+      <a aria-label="GitHub" target="_blank" href="https://github.com/chadreadey"><i class="icon fab fa-github"></i></a>
+      <a aria-label="LinkedIn" target="_blank" href="https://www.linkedin.com/in/chad-readey/"><i class="icon fab fa-linkedin"></i></a>
+    </div>
+    <div class="header-links">
+      <a class="link" href="#about">About</a> · <a class="link" href="#projects">Projects</a>
+    </div>
+  </div>
+  <a class="down" href="#about"><i class="fa fa-chevron-down"></i></a>
+</div>
+
+<section id="about">
+  <div class="avatar"><div class="initials">CR</div></div>
+
+  <div class="user-details">
+    <p>
+      I'm a data scientist and Columbia MS&amp;E student in New York.
+      I studied data science as an undergrad, played D1 baseball, and grew up in a social-policy household, which is why I still read markets through labor, rates, credit, and education before I look at price.
+      I'd rather build the system that does the analysis than do the analysis by hand.
+      Interested in working together or having a chat? Feel free to reach out.
+    </p>
+  </div>
+
+  <div class="user">
+    <div class="tech">
+      <h2>Analyzing</h2>
+      <div class="icons"><i class="fas fa-chart-line"></i><i class="fas fa-magnifying-glass-chart"></i><i class="fas fa-landmark"></i></div>
+      <p>Equity signals, macro indicators, biomedical evidence, sports stats. I like finding the gap between what the data says and what everyone assumes it says, then measuring it honestly.</p>
+    </div>
+    <div class="tech">
+      <h2>Building</h2>
+      <div class="icons"><i class="devicon-python-plain"></i><i class="devicon-typescript-plain"></i><i class="devicon-react-original"></i></div>
+      <p>Multi-agent LLM pipelines, FastAPI backends, React frontends, deployed on Railway and Vercel. Models shouldn't die in notebooks; mine ship with eval harnesses and error rates.</p>
+    </div>
+    <div class="tech">
+      <h2>Competing</h2>
+      <div class="icons"><i class="fas fa-baseball"></i><i class="fas fa-basketball"></i><i class="fas fa-trophy"></i></div>
+      <p>D1 baseball, D1 basketball offers, stock-pitch competitions. Years of competing taught me to prepare obsessively, lose gracefully, and keep score.</p>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <h1>Featured Projects</h1>
+
+  <div class="user-projects">
+    <div class="img"><img alt="AI Financial Analyst ticker input" src="media/thumb_ticker.jpg"></div>
+    <div class="text">
+      <h3>AI Financial Analyst</h3>
+      <p>Type a ticker and six specialist AI analysts, each modeled on a different firm's method, run in parallel over SEC filings, fundamentals, sentiment, and macro data. A synthesis agent resolves their contradictions into one investment brief. Underneath sits an XGBoost signal stack validated with combinatorial purged cross-validation.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey/ai-financial-analyst">GitHub</a> <a class="project-link" href="media/brag.mp4" target="_blank">Watch the 20s demo</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects flip">
+    <div class="img"><div class="tile" style="background:linear-gradient(135deg,#1b3a4b,#2e8b8b)"><i class="fas fa-table-cells"></i><small>Outcome × study design</small></div></div>
+    <div class="text">
+      <h3>Evidence Gap Mapper <span class="pill">private</span></h3>
+      <p>Give it a drug. It retrieves and classifies the published evidence into an outcome-by-study-design matrix and surfaces the empty cells, the research gaps. Every gap claim is derived from classified records, never asserted, and the tool ships with a measured error rate.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey/egm">GitHub (request access)</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects">
+    <div class="img"><div class="tile" style="background:linear-gradient(135deg,#4b134f,#782849)"><i class="fas fa-brain"></i><small>Telegram · n8n · Obsidian</small></div></div>
+    <div class="text">
+      <h3>Brain <span class="pill">private</span></h3>
+      <p>A personal intelligence platform. A Telegram bot is the front end, n8n handles orchestration, and an Obsidian vault is long-term memory. Agents file research, email digests, paper-trading logs, and cross-domain syntheses into it on a schedule.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey/brain">GitHub (request access)</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects flip">
+    <div class="img"><img alt="Six analyst agents" src="media/thumb_agents.jpg"></div>
+    <div class="text">
+      <h3>Macro Paper Book <span class="pill">private</span></h3>
+      <p>A multi-asset paper trading book that mirrors a macro newsletter's trades through Alpaca, then layers its own discovery agents on top to test whether the ideas actually hold up out of sample.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey/macro-paper">GitHub (request access)</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects">
+    <div class="img"><div class="tile" style="background:linear-gradient(135deg,#2b2d42,#8d99ae)"><i class="fas fa-baseball-bat-ball"></i><small>Sports analytics</small></div></div>
+    <div class="text">
+      <h3>Sports Analytics</h3>
+      <p>Two machine learning projects built from the inside of the game: predicting whether an MLB pitch gets called a ball or a strike, and predicting NBA player efficiency rating (PER). Years in the batter's box inform the feature engineering.</p>
+      <p class="links"><a class="project-link" href="mlb/">Try the strike-zone demo</a> <a class="project-link" target="_blank" href="https://github.com/chadreadey/mlb-pitch-classification">MLB Pitch Classification</a> <a class="project-link" target="_blank" href="https://github.com/chadreadey/nba-player-efficiency">NBA Player Efficiency</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects flip">
+    <div class="img"><div class="tile" style="background:linear-gradient(135deg,#b24244,#e07a5f)"><i class="fas fa-map-location-dot"></i><small>New York State</small></div></div>
+    <div class="text">
+      <h3>Eliminating Childcare Deserts in NYS</h3>
+      <p>An optimization model for placing new childcare capacity across New York State so that no community is left in a childcare desert. Public data, a real constraint set, and a social-policy question I grew up around.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey/Eliminating-Childcare-Deserts-in-NYS-through-Optimization">Check it out</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects">
+    <div class="img"><div class="tile" style="background:linear-gradient(135deg,#1d3557,#457b9d)"><i class="fas fa-graduation-cap"></i><small>Columbia Business School</small></div></div>
+    <div class="text">
+      <h3>MBA Copilot</h3>
+      <p>An LLM assistant for Columbia Business School coursework and casework, built in TypeScript and Next.js.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey/mba-copilot">Check it out</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects flip">
+    <div class="img"><div class="tile" style="background:linear-gradient(135deg,#3a506b,#5bc0be)"><i class="fas fa-medal"></i><small>Paris 2024</small></div></div>
+    <div class="text">
+      <h3>Olympic Medals Dashboard</h3>
+      <p>An interactive R dashboard of the 2024 Paris Summer Olympics medal table.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey/Olympic-Medals-dashboard">Check it out</a></p>
+    </div>
+  </div>
+
+  <div class="user-projects">
+    <div class="img"><div class="tile" style="background:linear-gradient(135deg,#24292e,#57606a)"><i class="fab fa-github"></i><small>github.com/chadreadey</small></div></div>
+    <div class="text">
+      <h3>More on GitHub</h3>
+      <p>Smaller experiments, notebooks, and the occasional half-finished idea live on my GitHub. Feel free to have a look around.</p>
+      <p class="links"><a class="project-link" target="_blank" href="https://github.com/chadreadey">Check it out</a></p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>&copy; Chad Readey 2026</p>
+  <p><a href="https://github.com/chadreadey" target="_blank">GitHub</a> · <a href="https://www.linkedin.com/in/chad-readey/" target="_blank">LinkedIn</a> · <a href="mailto:chadreadey@gmail.com">Email</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 30, density: { enable: true, value_area: 800 } },
+      color: { value: "#ffffff" },
+      shape: { type: "polygon", polygon: { nb_sides: 5 } },
+      opacity: { value: 0.5 },
+      size: { value: 3, random: true },
+      line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+      move: { enable: true, speed: 4, random: true, out_mode: "out" }
+    },
+    interactivity: { detect_on: "canvas", events: { onclick: { enable: true, mode: "push" }, resize: true }, modes: { push: { particles_nb: 4 } } },
+    retina_detect: true
+  });
+</script>
+</body>
+</html>
