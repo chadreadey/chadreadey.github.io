@@ -44,7 +44,7 @@
 <body>
 <header>
   <h1>Ball or Strike?</h1>
-  <p>Click anywhere to place a pitch, set the count, and see what a logistic regression trained on 8,147 pitches from the 2019 MLB season thinks the umpire will call. Catcher's view.</p>
+  <p>Click anywhere to place a pitch, set the count, and see the chance a logistic regression trained on 8,147 pitches from the 2019 MLB season gives it of ending as a strike (called, swinging, or foul). Catcher's view.</p>
   <a class="back" href="../#projects">← back to portfolio</a>
 </header>
 <main>
@@ -67,11 +67,11 @@
     <div class="model">
       <div class="stats">
         <div class="stat"><b>82.4%</b>test accuracy</div>
-        <div class="stat"><b>0.916</b>AUC</div>
+        <div class="stat"><b>0.916</b>train AUC</div>
         <div class="stat"><b>6</b>terms</div>
       </div>
       <p><code>logit = −5.02 + 0.11·px + 6.54·pz + 0.16·balls + 0.41·strikes − 2.05·px² − 1.36·pz²</code></p>
-      <p>The squared terms give the zone its elliptical shape. The count terms are the umpire bias the model learned. Try a 3-0 count versus 0-2 on the same corner pitch and watch the 50% line move.</p>
+      <p>The squared terms give the zone its elliptical shape. The count terms are the count effect the model learned. Try a 3-0 count versus 0-2 on the same corner pitch and watch the 50% line move.</p>
       <p>Model from <a href="https://github.com/chadreadey/mlb-pitch-classification" style="color:var(--accent)">mlb-pitch-classification</a>, originally built with Carli Kelley and Garner Hasler. Interactive version by Chad Readey.</p>
     </div>
   </div>
@@ -155,7 +155,7 @@
     const p = pStrike(state.px, state.pz, state.b, state.s);
     document.getElementById("pct").textContent = (p * 100).toFixed(1) + "%";
     const call = document.getElementById("call");
-    call.textContent = p >= 0.5 ? "called STRIKE" : "called BALL"; call.className = "call " + (p >= 0.5 ? "strike" : "ball");
+    call.textContent = p >= 0.5 ? "predicted STRIKE" : "predicted BALL"; call.className = "call " + (p >= 0.5 ? "strike" : "ball");
     document.getElementById("odds").textContent = `count ${state.b}-${state.s} · odds ${(p/(1-p)).toFixed(2)} : 1`;
     document.getElementById("px").textContent = state.px.toFixed(2);
     document.getElementById("pz").textContent = state.pz.toFixed(2);
