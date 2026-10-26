@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chad Readey · Data Scientist &amp; Systems Builder</title>
-  <meta name="description" content="Chad Readey, data scientist and Columbia MS&amp;E student. Projects: a multi-agent equity research assistant, an LLM evidence-gap mapper for drug research, and an MLB ball/strike call model.">
+  <title>Chad Readey · AI Engineer</title>
+  <meta name="description" content="Chad Readey, AI engineer. Ships LLM agent systems into real workflows, with the evaluation to show whether they work. Projects: an LLM evidence-gap mapper for drug research, an NBA leakage audit and forecast, and an MLB ball/strike call model.">
   <link rel="canonical" href="https://chadreadey.github.io/">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://chadreadey.github.io/">
-  <meta property="og:title" content="Chad Readey · Data Scientist &amp; Systems Builder">
-  <meta property="og:description" content="Multi-agent LLM systems and statistical models, built end to end with honest evaluation.">
+  <meta property="og:title" content="Chad Readey · AI Engineer">
+  <meta property="og:description" content="LLM agent systems shipped into real workflows, and statistical models, built end to end with honest evaluation.">
   <meta property="og:image" content="https://chadreadey.github.io/media/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -74,6 +74,24 @@
     .link-btn.primary { background: var(--accent); color: #fff; }
     .link-btn:hover { background: var(--accent); color: #fff; }
 
+    /* ---------- results table ---------- */
+    .results { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; border: 1px solid var(--line); }
+    .results th, .results td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); }
+    .results th:first-child, .results td:first-child { text-align: left; white-space: nowrap; }
+    .results thead th { background: var(--soft); color: var(--ink); font-size: 13px; }
+    .results tfoot td { font-weight: 700; color: var(--ink); border-bottom: 0; }
+    .results small { display: block; color: var(--muted); font-size: 12px; }
+    .results .worse { color: var(--rose); }
+
+    /* ---------- experience ---------- */
+    .job { display: grid; grid-template-columns: 13em minmax(0, 1fr); gap: 8px 32px; padding: 24px 0; border-top: 1px solid var(--line); }
+    .job:first-of-type { border-top: 0; padding-top: 4px; }
+    .job .org { font-weight: 700; color: var(--ink); }
+    .job .when { font-size: 14px; color: var(--muted); }
+    .job h3 { font-size: 18px; margin: 0 0 6px; }
+    .job ul { margin: 0; padding-left: 1.1em; font-size: 15.5px; }
+    .job li + li { margin-top: 4px; }
+
     /* ---------- background ---------- */
     .bg-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
     .bg-grid h3 { font-size: 17px; margin: 0 0 4px; }
@@ -100,6 +118,7 @@
       .bg-grid, .cards { grid-template-columns: 1fr; }
       .facts { grid-template-columns: 1fr; gap: 2px; }
       .facts dd { margin-bottom: 10px; }
+      .job { grid-template-columns: 1fr; gap: 4px; }
       .intro { padding-top: 28px; padding-bottom: 44px; }
       .intro p { font-size: 17px; }
       .social { margin-left: 0; }
@@ -108,12 +127,13 @@
   </style>
 </head>
 <body>
-<a class="skip" href="#projects">Skip to projects</a>
+<a class="skip" href="#experience">Skip to content</a>
 
 <header class="hero">
   <nav class="wrap" aria-label="Primary">
     <a class="brand" href="#top">Chad Readey</a>
     <ul>
+      <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#background">Background</a></li>
       <li><a href="#more">More work</a></li>
@@ -122,8 +142,8 @@
   </nav>
   <div class="wrap intro" id="top">
     <h1>Chad Readey</h1>
-    <p class="role">Data Scientist &amp; Systems Builder</p>
-    <p>I build data systems end to end: retrieval and LLM pipelines, statistical models, and the evaluation that shows whether they actually work.</p>
+    <p class="role">AI Engineer</p>
+    <p>I ship LLM agent systems into real workflows, at a private equity firm, a venture fund, and in my own products, along with the evaluation that shows whether they actually work.</p>
     <p class="edu">M.S. in Management Science &amp; Engineering, Columbia University (through Dec 2026) · B.A. in Data Science, Northwestern University</p>
     <div class="actions">
       <a class="btn primary" href="#projects">View projects</a>
@@ -138,38 +158,63 @@
 </header>
 
 <main>
+<section id="experience">
+  <div class="wrap">
+    <h2>Experience</h2>
+    <p class="lede">AI systems I've built inside other organizations, on their data and for their users.</p>
+
+    <article class="job">
+      <div>
+        <div class="org">The Vistria Group</div>
+        <div class="when">Private equity · Chicago</div>
+        <div class="when">Jun 2026 – present</div>
+      </div>
+      <div>
+        <h3>Consultant, Data &amp; AI <span class="tag">Intern, Jun–Aug 2026</span></h3>
+        <ul>
+          <li>Designed and shipped a six-agent research system that breaks a complex theme into independent analytical lenses, tests competing hypotheses, and synthesizes the findings.</li>
+          <li>Built a natural-language interface over the firm's proprietary CRM, with a mediation layer that validates model-generated intent, builds parameterized queries, and enforces permission gating before anything touches sensitive data.</li>
+          <li>Put production AI workflows on structured error handling, observability, and a five-class failure taxonomy used for debugging and reliability analysis.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="job">
+      <div>
+        <div class="org">Crystal Venture Partners</div>
+        <div class="when">Venture capital · New York</div>
+        <div class="when">Dec 2025 – May 2026</div>
+      </div>
+      <div>
+        <h3>Embedded Engineer</h3>
+        <ul>
+          <li>Architected an agentic research system that interprets inbound requests, ingests unstructured documents, retrieves outside evidence, evaluates risk factors, and writes decision-ready briefs.</li>
+          <li>Iterated it with the investment team through human-in-the-loop review of coverage, evidence quality, risk identification, and usefulness of the final brief.</li>
+          <li>Built data-quality agents that clean records, classify entities, and update 2,000+ entries, replacing a recurring manual maintenance job.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="job">
+      <div>
+        <div class="org">Handshake AI</div>
+        <div class="when">Remote</div>
+        <div class="when">Sep – Nov 2025</div>
+      </div>
+      <div>
+        <h3>Model Validation Expert, ML</h3>
+        <ul>
+          <li>Wrote multimodal evaluation tasks that test image-grounded retrieval and reasoning in frontier LLMs.</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
 <section id="projects">
   <div class="wrap">
     <h2>Selected projects</h2>
     <p class="lede">Three systems I designed and built, with what each one produces and how far the evidence goes.</p>
-
-    <article class="project">
-      <figure>
-        <img src="media/thumb_agents.jpg" width="800" height="450" alt="AI Financial Analyst progress screen: six analyst agents (DCF, Risk, Earnings, Competitive and Sector, Pattern, Macro) running in parallel before synthesis.">
-        <figcaption>Frame from the 20-second animated overview of the app.</figcaption>
-      </figure>
-      <div>
-        <h3>AI Financial Analyst</h3>
-        <p class="one-liner">Enter a ticker; six LLM analyst agents work in parallel and a synthesis agent reconciles them into one investment brief.</p>
-        <dl class="facts">
-          <dt>Problem</dt>
-          <dd>A first-pass equity review means pulling filings, fundamentals, news, and macro data from many sources and weighing views that disagree.</dd>
-          <dt>What I built</dt>
-          <dd>The whole system: data integrations (SEC EDGAR/XBRL, market data, news, FRED), parallel agent orchestration in a FastAPI backend, the synthesis step, a React frontend, and a separate backtest harness for the quantitative screen.</dd>
-          <dt>About the agents</dt>
-          <dd>Each agent's prompt takes on the analytical style associated with a well-known firm (e.g. a Morgan Stanley-style DCF). These are prompt personas only, with no affiliation, endorsement, or access to those firms' methods.</dd>
-          <dt>Evaluation</dt>
-          <dd>In a 2018–2025 backtest (10 positions), the quantitative screen alone had a Sharpe ratio of 1.15 against 0.74 for SPY; adding the LLM agents lowered it to 1.01. Survivorship bias and LLM look-ahead are not corrected, so treat these as upper bounds.</dd>
-          <dt>Stack</dt>
-          <dd>Python, FastAPI, Claude, React, Railway, Vercel</dd>
-        </dl>
-        <div class="links">
-          <a class="link-btn primary" href="https://ai-financial-analyst-eight.vercel.app/analysis">Try the live app</a>
-          <a class="link-btn" href="https://github.com/chadreadey/ai-financial-analyst">View code</a>
-          <a class="link-btn" href="media/brag.mp4">Watch 20-second overview</a>
-        </div>
-      </div>
-    </article>
 
     <article class="project">
       <figure class="tall">
@@ -193,6 +238,45 @@
         </dl>
         <div class="links">
           <a class="link-btn primary" href="https://egm-production.up.railway.app/">Try the live app</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="project">
+      <figure>
+        <table class="results">
+          <thead>
+            <tr><th scope="col">Test window</th><th scope="col">Baseline MAE</th><th scope="col">Model MAE</th><th scope="col">Δ (95% CI)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2007–11</td><td>2.024</td><td>1.829</td><td>−0.195<small>−0.25 to −0.14</small></td></tr>
+            <tr><td>2012–16</td><td>2.087</td><td>1.880</td><td>−0.207<small>−0.27 to −0.15</small></td></tr>
+            <tr><td>2017–21</td><td>2.075</td><td>1.944</td><td>−0.131<small>−0.19 to −0.07</small></td></tr>
+            <tr><td>2022–26</td><td>1.911</td><td>1.977</td><td class="worse">+0.067<small>+0.00 to +0.13</small></td></tr>
+          </tbody>
+          <tfoot>
+            <tr><td>All 6,184</td><td>2.022</td><td>1.910</td><td>−0.112<small>−0.14 to −0.08</small></td></tr>
+          </tfoot>
+        </table>
+        <figcaption>Next-season PER forecast vs. a tuned Marcel-style baseline, one rolling-origin test per window (players with 500+ minutes). Negative Δ means the model is better.</figcaption>
+      </figure>
+      <div>
+        <h3>NBA PER: Leakage Audit &amp; Forecast</h3>
+        <p class="one-liner">I re-examined a group project's headline result, showed it came from leakage, and replaced it with an honest next-season forecast.</p>
+        <dl class="facts">
+          <dt>Problem</dt>
+          <dd>A 2023 group project (with Carli Kelley and Garner Hasler) reported a test MAE of 0.35 PER points, against a PER standard deviation of about 4.7. Was that prediction?</dd>
+          <dt>What I found</dt>
+          <dd>Mostly formula recovery. PER is computed from the same season's box score the model was given, plus composites built from it (BPM, Win Shares, VORP). Out-of-time splits barely changed the error, removing the composites raised it to 1.34, and traded players' near-duplicate rows crossed the random split.</dd>
+          <dt>What I built</dt>
+          <dd>My own 2026 refresh with a real task: forecast next season's PER from what's known at season's end. Rolling-origin backtest over four 5-season windows, time-ordered CV for model selection, player-cluster bootstrap intervals, and pinned, checksummed data that one command reproduces.</dd>
+          <dt>Evaluation</dt>
+          <dd>Across 6,184 player-seasons, the CV-selected model beats the baseline by 0.11 MAE (about 5–6%). It does not hold in 2022–26, where it is slightly worse; ridge would have won there, but picking it after seeing the test set would be selecting on the test set.</dd>
+          <dt>Stack</dt>
+          <dd>Python, pandas, scikit-learn, uv, Modal</dd>
+        </dl>
+        <div class="links">
+          <a class="link-btn primary" href="https://github.com/chadreadey/nba-player-efficiency">Read the write-up and code</a>
         </div>
       </div>
     </article>
@@ -261,9 +345,8 @@
         <div class="links"><a class="link-btn" href="https://github.com/chadreadey/Eliminating-Childcare-Deserts-in-NYS-through-Optimization">View code</a></div>
       </article>
       <article class="card">
-        <h3>NBA Player Efficiency</h3>
-        <p>Group project predicting a player's season PER from box-score statistics. A stacked ensemble reached a test MAE of 0.35 PER points on a random 80/20 split.</p>
-        <div class="links"><a class="link-btn" href="https://github.com/chadreadey/nba-player-efficiency">View code</a></div>
+        <h3>AI Financial Analyst <span class="tag">Being rebuilt</span></h3>
+        <p>Enter a ticker; six LLM analyst agents work in parallel over SEC filings, market data, news, and macro series, and a synthesis agent reconciles them into one investment brief. A rebuild of the app and its evaluation is in progress.</p>
       </article>
       <article class="card">
         <h3>Olympic Medals Dashboard</h3>
