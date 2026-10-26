@@ -283,8 +283,8 @@
 
     <article class="project">
       <figure>
-        <img src="media/mlb_demo.jpg" width="1040" height="801" loading="lazy" alt="Ball or Strike demo: a strike-zone heatmap of predicted strike probability with a pitch on the outside edge, showing 87.2% strike on a 3-0 count.">
-        <figcaption>The interactive demo (original 2019 model): change the count and the 50% line moves.</figcaption>
+        <img src="media/mlb_demo.jpg" width="1040" height="950" loading="lazy" alt="Ball or Strike demo: a strike-zone heatmap of called-strike probability for a right-handed batter, with a pitch on the outside edge showing 92.3% strike on a 3-0 count.">
+        <figcaption>The interactive demo runs the rebuilt model: change the count, batter side or zone size and the 50% line moves.</figcaption>
       </figure>
       <div>
         <h3>MLB Pitch Classification</h3>
@@ -295,11 +295,11 @@
           <dt>What I built</dt>
           <dd>A rebuild on Statcast data: a pipeline that pulls every called pitch from 2022–2026, and a logistic model that measures location relative to each batter's own zone. I also built the interactive demo. The original 2019 analysis was a 2023 group project with Carli Kelley and Garner Hasler.</dd>
           <dt>Evaluation</dt>
-          <dd>Trained on 1.42M called pitches from 2022–24 and tested on 708K from the later 2025–26 seasons: 93.4% accuracy, AUC 0.984. The original 2019 feature set scores 92.5% on the same split. Near the edge the call is genuinely uncertain: accuracy is about 64% for pitches within an inch outside the zone.</dd>
-          <dt>Demo</dt>
-          <dd>The interactive demo still runs the original 2019 model, which predicts any strike (called, swinging, or foul) and reached 82.4% test accuracy. The two numbers are not directly comparable.</dd>
+          <dd>Trained on 1.06M called pitches from 2022–24 and tested on 708K from the later 2025–26 seasons: 93.5% accuracy, AUC 0.984. The original 2019 feature set scores 92.5% on the same split, so most of the gain over the 2019 project comes from cleaner data and a cleaner target, not a cleverer model. Near the edge the call is genuinely uncertain: accuracy is about 65% for pitches within an inch outside the zone.</dd>
+          <dt>What I fixed</dt>
+          <dd>The 2019 project's 82.4% predicted any strike (called, swinging, or foul), so it is not comparable with these numbers. While publishing the rebuild I also found the training script silently adding 2019 to the 2022–24 training set; I fixed it and report the 2022–24-only numbers.</dd>
           <dt>Stack</dt>
-          <dd>Python, pybaseball (Statcast), scikit-learn, statsmodels, JavaScript canvas</dd>
+          <dd>Python, pybaseball (Statcast), pandas, scikit-learn, JavaScript canvas</dd>
         </dl>
         <div class="links">
           <a class="link-btn primary" href="mlb/">Try the demo</a>
