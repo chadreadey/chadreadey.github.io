@@ -48,11 +48,14 @@
     .quiet { display: flex; gap: 16px; margin-top: 18px; font-size: 14px; }
     .quiet a { color: var(--muted); }
     .quiet a:hover { color: var(--ink); }
-    .preview { position: relative; margin: 0; }
-    .preview a { position: relative; display: block; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; box-shadow: 0 12px 32px -18px rgba(23,23,26,.35); }
-    .preview .hl { position: absolute; left: 2%; right: 2%; top: 87.2%; height: 12.3%; border: 2px solid var(--accent); border-radius: 6px; pointer-events: none; }
-    .preview figcaption { font-size: 13.5px; color: var(--muted); margin-top: 12px; }
-    .preview figcaption b { color: var(--ink); font-weight: 600; }
+    .tools { border: 1px solid var(--line); border-radius: 10px; padding: 22px 26px; background: #fff; box-shadow: 0 12px 32px -18px rgba(23,23,26,.35); }
+    .tools .label { display: block; margin: 0 0 14px; }
+    .tools dl { margin: 0; display: grid; grid-template-columns: 7.5em minmax(0, 1fr); }
+    .tools dt, .tools dd { padding: 12px 0; border-top: 1px solid var(--line); }
+    .tools dt:first-of-type, .tools dd:first-of-type { border-top: 0; padding-top: 0; }
+    .tools dt { font-weight: 600; color: var(--ink); font-size: 15px; }
+    .tools dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+    .tools dd span { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: var(--text); background: var(--soft); border: 1px solid var(--line); border-radius: 5px; padding: 2px 8px; }
 
     .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .strip ul { list-style: none; margin: 0 auto; padding-top: 14px; padding-bottom: 14px; display: flex; flex-wrap: wrap; gap: 6px 28px; font-size: 14px; color: var(--muted); }
@@ -112,6 +115,8 @@
 
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; gap: 36px; padding-bottom: 44px; }
+      .tools dl { grid-template-columns: 1fr; }
+      .tools dd, .tools dd:first-of-type { border-top: 0; padding-top: 6px; }
       .cards { grid-template-columns: 1fr; max-width: 560px; }
       .card .vis { height: 220px; }
     }
@@ -149,13 +154,14 @@
       </div>
       <p class="quiet"><a href="media/Chad_Readey_Resume.pdf">Résumé</a><a href="https://github.com/chadreadey">GitHub</a><a href="https://www.linkedin.com/in/chad-readey/">LinkedIn</a></p>
     </div>
-    <figure class="preview">
-      <a href="https://egm-production.up.railway.app/?run=94b73e48-3e86-408b-9887-e2a7d78a2e26" aria-label="Open the live tamoxifen run of the Evidence Gap Mapper">
-        <img src="media/egm_hero.jpg" width="1200" height="1000" alt="Evidence Gap Mapper results for tamoxifen: outcomes as rows, study designs as columns, study counts in each cell, and striped GAP cells where no primary study was found.">
-        <span class="hl" aria-hidden="true"></span>
-      </a>
-      <figcaption><b>Evidence Gap Mapper, live.</b> 563 tamoxifen studies mapped by outcome and study design. The outlined row has no primary study in any design.</figcaption>
-    </figure>
+    <div class="tools" aria-label="Tools">
+      <span class="label">Tools</span>
+      <dl>
+        <dt>AI systems</dt><dd><span>LangGraph</span><span>LangChain</span><span>RAG</span><span>tool calling</span><span>MCP</span><span>LLM evaluation</span></dd>
+        <dt>ML</dt><dd><span>scikit-learn</span><span>XGBoost</span><span>LightGBM</span><span>PyTorch</span><span>statsmodels</span><span>Gurobi</span></dd>
+        <dt>Engineering</dt><dd><span>Python</span><span>SQL</span><span>TypeScript</span><span>FastAPI</span><span>PostgreSQL</span><span>GCP</span><span>Azure</span><span>pytest</span></dd>
+      </dl>
+    </div>
   </div>
 </header>
 
@@ -272,6 +278,22 @@
         <ul>
           <li><b>xT, a diligence agent.</b> Triages inbound deals: reads the email and the deck, researches the company and founders, and writes a brief for the partners. Iterated with the partners on coverage, risk spotting and usefulness before it went into the workflow.</li>
           <li><b>Also:</b> a calendar-management agent, classifiers that cleaned and labeled 2,000+ CRM records, and a run of smaller analyses and automations.</li>
+        </ul>
+      </article>
+      <article class="fund">
+        <h3>Handshake AI</h3>
+        <p class="meta">AI model evaluation · Model Validation Expert, ML · Sep – Nov 2025</p>
+        <ul>
+          <li><b>Multimodal evals.</b> Wrote evaluation tasks that test whether LLMs can retrieve and reason over information in images, across 15 combined text-and-image contexts.</li>
+          <li><b>Agent workflows.</b> Built workflows for 5 AI agents that combine LLM reasoning, code generation and feedback loops to speed up ML experiments.</li>
+        </ul>
+      </article>
+      <article class="fund">
+        <h3>Public Equity Group</h3>
+        <p class="meta">Consulting · Graduate Fellow · Apr – Sep 2025</p>
+        <ul>
+          <li><b>Edtech client.</b> User research that shaped the product roadmap; user retention rose 15%.</li>
+          <li><b>Cost review.</b> Built a $990K cost-reduction proposal and helped leadership assess financial sustainability scenarios for an at-risk firm.</li>
         </ul>
       </article>
     </div>
