@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How Much Does the Count Move the Strike Zone? · Chad Readey</title>
-  <meta name="description" content="A logistic model of MLB umpires' ball/strike calls on 1.77M Statcast pitches: 93.5% accuracy on unseen seasons, error concentrated at the zone edge, and a count effect of about 20 points.">
+  <meta name="description" content="Modelling MLB umpires' ball/strike calls on 1.77M Statcast pitches: a LightGBM model with pitch type and movement reaches 94.2% accuracy on unseen seasons, error concentrates at the zone edge, and the count moves the zone about 19 points.">
   <link rel="canonical" href="https://chadreadey.github.io/mlb/writeup.html">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://chadreadey.github.io/mlb/writeup.html">
   <meta property="og:title" content="How much does the count move the strike zone?">
-  <meta property="og:description" content="1.77M called pitches, a model of the umpire's call, and a count effect of about 20 points on the same corner pitch.">
+  <meta property="og:description" content="1.77M called pitches, a model of the umpire's call, and a count effect of about 19 points on the same corner pitch.">
   <meta property="og:image" content="https://chadreadey.github.io/media/mlb_demo.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
@@ -85,7 +85,7 @@
   <div class="wrap title">
     <p class="kicker">MLB · Statcast · October 2026</p>
     <h1>How much does the count move the strike zone?</h1>
-    <p class="dek">A model of the umpire's ball/strike call, trained on 1.06M called pitches and tested on 708K from seasons it never saw.</p>
+    <p class="dek">A model of the umpire's ball/strike call, built on 1.06M called pitches and tested on 708K from seasons it never saw.</p>
   </div>
 </header>
 
@@ -94,77 +94,85 @@
     <p>Every taken pitch in baseball ends in a judgement call: ball or strike. I wanted to know how predictable that call is, what drives it, and where it stops being predictable. So I revisited an old class project and rebuilt it from the ground up on Statcast: every pitch an MLB umpire called from 2022 to 2026, 1.77 million in all.</p>
 
     <div class="stats">
-      <div class="stat"><b>93.5%</b>accuracy on 2025–26</div>
-      <div class="stat"><b>0.984</b>AUC</div>
-      <div class="stat"><b>~20 pts</b>count effect on a corner pitch</div>
+      <div class="stat"><b>94.2%</b>accuracy on 2025–26</div>
+      <div class="stat"><b>0.987</b>AUC</div>
+      <div class="stat"><b>~19 pts</b>count effect on a corner pitch</div>
     </div>
 
     <h2>The setup</h2>
     <p><strong>The question.</strong> Will the umpire call this taken pitch a strike? Only called strikes and balls are kept, so every row is a judgement call.</p>
-    <p><strong>The data.</strong> Statcast, pulled with <code>pybaseball</code>, regular season only. Besides where the pitch crossed the plate, Statcast records the top and bottom of each batter's strike zone, which makes it possible to ask whether a pitch was in <em>that batter's</em> zone.</p>
-    <p><strong>The test.</strong> Train on 2022–24 (1.06M pitches), test on 2025–26 (708K). Umpires, pitch mix and the zone itself drift from year to year, so the model is judged on seasons it has never seen. About a third of called pitches are strikes, so "always ball" scores about 67%; that is the floor.</p>
+    <p><strong>The data.</strong> Statcast, pulled with <code>pybaseball</code>, regular season only. Besides where the pitch crossed the plate, Statcast records the top and bottom of each batter's strike zone, plus each pitch's type, speed, spin and movement, and who was catching.</p>
+    <p><strong>The test.</strong> Everything is built on 2022–24 (1.06M pitches) and tested on 2025–26 (708K). Umpires, pitch mix and the zone itself drift from year to year, so the models are judged on seasons they have never seen. About a third of called pitches are strikes, so "always ball" scores about 67%; that is the floor.</p>
 
-    <h2>The model</h2>
-    <p>A logistic regression, kept deliberately simple so every term is readable. Location is rescaled so each batter's rulebook zone becomes the same square: a pitch at 3.4 feet is a strike to a tall hitter and high to a short one, and the model should know that. On top of that come batter handedness, the count, and count × location interactions (17 terms in all).</p>
+    <h2>Two models</h2>
+    <p><strong>A readable baseline.</strong> A logistic regression with 17 terms. Location is rescaled so each batter's rulebook zone becomes the same square: a pitch at 3.4 feet is a strike to a tall hitter and high to a short one. On top of that come handedness, the count and count × location interactions.</p>
+    <p><strong>A gradient-boosted model.</strong> LightGBM on the same zone and count inputs, then adding the pitch itself: type, speed, spin, movement and pitcher hand. It is fit on 2022–23, with 2024 split by game for early stopping and probability calibration. A third version adds a catcher framing score.</p>
     <div class="scroll">
       <table>
-        <thead><tr><th>Model</th><th>Accuracy</th><th>Log loss</th><th>Brier</th><th>AUC</th></tr></thead>
+        <thead><tr><th>Model</th><th>Accuracy</th><th>Log loss</th><th>AUC</th></tr></thead>
         <tbody>
-          <tr><td>Location + count only</td><td>92.53%</td><td>0.1685</td><td>0.0523</td><td>0.9816</td></tr>
-          <tr><td><strong>Batter-relative zone + handedness + count</strong></td><td><strong>93.51%</strong></td><td><strong>0.1542</strong></td><td><strong>0.0465</strong></td><td><strong>0.9842</strong></td></tr>
+          <tr><td>Logistic: batter-relative zone + count</td><td>93.51%</td><td>0.1542</td><td>0.9842</td></tr>
+          <tr><td>LightGBM: zone + count</td><td>94.05%</td><td>0.1403</td><td>0.9866</td></tr>
+          <tr><td><strong>LightGBM: + pitch type, speed, spin, movement</strong></td><td><strong>94.17%</strong></td><td><strong>0.1383</strong></td><td><strong>0.9870</strong></td></tr>
+          <tr><td>LightGBM: + pitch + catcher framing</td><td>94.13%</td><td>0.1383</td><td>0.9870</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top:16px">Raw location and count already get you most of the way. Measuring location against the batter's own zone adds a point of accuracy and, more usefully, better-calibrated probabilities, which is what the demo displays.</p>
+    <p style="margin-top:16px">Most of the gain is flexibility, not new information: on exactly the same inputs, the boosted model beats the logistic one by half a point and cuts log loss by 9%. The pitch features add a little more. The demo runs the third row.</p>
 
     <h2>Finding 1: the error lives at the edge</h2>
-    <p>Far from the zone, the model is right more than 99% of the time. Within an inch outside the rulebook zone, umpires call about <strong>half</strong> of pitches strikes, and the model is right only about <strong>65%</strong> of the time.</p>
+    <p>Far from the zone, both models are right more than 99% of the time. Within an inch outside the rulebook zone, umpires call about <strong>half</strong> of pitches strikes. That band is where the boosted model earns its keep, and it is still the hardest place to call.</p>
     <div class="scroll">
       <table>
-        <thead><tr><th>Distance from the batter's zone edge</th><th>Pitches</th><th>Strike rate</th><th>Accuracy</th></tr></thead>
+        <thead><tr><th>Distance from the batter's zone edge</th><th>Pitches</th><th>Strike rate</th><th>Logistic</th><th>LightGBM</th></tr></thead>
         <tbody>
-          <tr><td>more than 6 in inside</td><td>33,920</td><td>100%</td><td>100.0%</td></tr>
-          <tr><td>3–6 in inside</td><td>69,007</td><td>99%</td><td>99.4%</td></tr>
-          <tr><td>1–3 in inside</td><td>65,823</td><td>93%</td><td>93.4%</td></tr>
-          <tr><td>0–1 in inside</td><td>37,792</td><td>77%</td><td>77.1%</td></tr>
-          <tr><td>0–1 in outside</td><td>40,023</td><td>51%</td><td>64.9%</td></tr>
-          <tr><td>1–3 in outside</td><td>83,716</td><td>18%</td><td>81.1%</td></tr>
-          <tr><td>3–6 in outside</td><td>120,287</td><td>2%</td><td>97.9%</td></tr>
-          <tr><td>more than 6 in outside</td><td>257,448</td><td>0%</td><td>99.9%</td></tr>
+          <tr><td>more than 6 in inside</td><td>33,920</td><td>100%</td><td>100.0%</td><td>100.0%</td></tr>
+          <tr><td>3–6 in inside</td><td>69,007</td><td>99%</td><td>99.4%</td><td>99.4%</td></tr>
+          <tr><td>1–3 in inside</td><td>65,823</td><td>93%</td><td>93.4%</td><td>93.5%</td></tr>
+          <tr><td>0–1 in inside</td><td>37,792</td><td>77%</td><td>77.1%</td><td>78.4%</td></tr>
+          <tr><td><strong>0–1 in outside</strong></td><td>40,023</td><td>51%</td><td>64.9%</td><td><strong>69.9%</strong></td></tr>
+          <tr><td>1–3 in outside</td><td>83,716</td><td>18%</td><td>81.1%</td><td>83.6%</td></tr>
+          <tr><td>3–6 in outside</td><td>120,287</td><td>2%</td><td>97.9%</td><td>97.9%</td></tr>
+          <tr><td>more than 6 in outside</td><td>257,448</td><td>0%</td><td>99.9%</td><td>99.9%</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="margin-top:16px">Nothing in location and count separates the calls in that band. That is where umpire judgement, catcher framing and pitch type would have to come in.</p>
 
-    <h2>Finding 2: the count moves the zone about 20 points</h2>
-    <p>Take a right-hander and a pitch exactly on the outside edge at mid-zone height. The model gives a <strong>72%</strong> chance of a called strike at 0&#8209;2, <strong>88%</strong> at 0&#8209;0 and <strong>92%</strong> at 3&#8209;0. Same pitch, same spot, about 20 points apart depending on the count. Umpires widen the zone when the pitcher is behind and tighten it when the batter is in a hole.</p>
+    <h2>Finding 2: the count moves the zone about 19 points</h2>
+    <p>Take a right-hander's four-seam fastball to a right-handed batter, exactly on the outside edge at mid-zone height. The model gives a <strong>69%</strong> chance of a called strike at 0&#8209;2, <strong>83%</strong> at 0&#8209;0 and <strong>88%</strong> at 3&#8209;0. Same pitch, same spot, about 19 points apart depending on the count. Umpires widen the zone when the pitcher is behind and tighten it when the batter is in a hole.</p>
     <figure>
       <div class="scroll">
         <table class="count">
           <thead><tr><th>P(called strike)</th><th>0 strikes</th><th>1 strike</th><th>2 strikes</th></tr></thead>
           <tbody>
-            <tr><th scope="row">0 balls</th><td style="background:#965771;color:#fff">88%</td><td style="background:#ba8ea1;color:var(--ink)">81%</td><td style="background:#eadae2;color:var(--ink)">72%</td></tr>
-            <tr><th scope="row">1 ball</th><td style="background:#8c4864;color:#fff">89%</td><td style="background:#ac798e;color:#fff">84%</td><td style="background:#d8bdc9;color:var(--ink)">76%</td></tr>
-            <tr><th scope="row">2 balls</th><td style="background:#843a58;color:#fff">91%</td><td style="background:#9f657e;color:#fff">86%</td><td style="background:#c7a3b2;color:var(--ink)">79%</td></tr>
-            <tr><th scope="row">3 balls</th><td style="background:#7c2e4e;color:#fff">92%</td><td style="background:#94536e;color:#fff">88%</td><td style="background:#b88b9e;color:var(--ink)">81%</td></tr>
+            <tr><th scope="row">0 balls</th><td style="background:#a05f6f;color:#fff">83%</td><td style="background:#b98895;color:var(--ink)">78%</td><td style="background:#e8d6db;color:var(--ink)">69%</td></tr>
+            <tr><th scope="row">1 ball</th><td style="background:#8f4255;color:#fff">86%</td><td style="background:#b98895;color:var(--ink)">78%</td><td style="background:#e0cad0;color:var(--ink)">70%</td></tr>
+            <tr><th scope="row">2 balls</th><td style="background:#853145;color:#fff">88%</td><td style="background:#a56776;color:#fff">82%</td><td style="background:#cba6af;color:var(--ink)">74%</td></tr>
+            <tr><th scope="row">3 balls</th><td style="background:#853145;color:#fff">88%</td><td style="background:#a56776;color:#fff">82%</td><td style="background:#b98895;color:var(--ink)">78%</td></tr>
           </tbody>
         </table>
       </div>
-      <figcaption>Same pitch in every cell: right-handed batter, outside edge, mid-zone height. More balls widen the zone; more strikes shrink it.</figcaption>
+      <figcaption>Same pitch in every cell: right-hander's four-seamer, right-handed batter, outside edge, mid-zone height. More balls widen the zone; more strikes shrink it.</figcaption>
     </figure>
 
+    <h2>Finding 3: four-seamers get the fewest edge strikes</h2>
+    <p>Straight from the data: within an inch of the zone edge, on either side, umpires called <strong>61%</strong> of four-seam fastballs strikes in 2025–26, against <strong>66%</strong> of sinkers. Changeups (62%) sit near four-seamers; cutters, sliders, curveballs and sweepers fall in between (64–65%).</p>
+
+    <h2>Finding 4: catchers differ, but framing didn't help the forecast</h2>
+    <p>I built a framing score for each catcher: called strikes above what location and count predict, shrunk toward zero for small samples. Catchers do differ. From the 10th to the 90th percentile, the score runs from about −9 to +9 called strikes per 1,000 called pitches. But adding it to the model changed nothing on 2025–26. The effect is a percent or two of calls, mostly away from the edge, and a 2022–24 score may not carry forward. A better framing measure is an open question.</p>
+
     <h2>Try it</h2>
-    <p>The <a href="./">interactive demo</a> runs the same fitted model in the browser. Drag the pitch onto the corner, switch between 0&#8209;2 and 3&#8209;0, flip the batter's side or zone size, and watch the 50% line move.</p>
+    <p>The <a href="./">interactive demo</a> runs the LightGBM model in your browser with ONNX Runtime Web. Pick a pitch type and pitcher hand, drag the pitch onto the corner, flip between 0&#8209;2 and 3&#8209;0, and watch the 50% line move.</p>
     <figure>
-      <a href="./"><img src="../media/mlb_demo.jpg" width="1040" height="950" loading="lazy" alt="The Ball or Strike demo: a strike-zone heatmap for a right-handed batter with a pitch on the outside edge at a 3&#8209;0 count, showing a 92.3% chance of a called strike."></a>
-      <figcaption>The demo at 3&#8209;0, pitch on the outside edge.</figcaption>
+      <a href="./"><img src="../media/mlb_demo.jpg" width="1040" height="1163" loading="lazy" alt="The Ball or Strike demo: a strike-zone heatmap for a right-hander's four-seamer to a right-handed batter on the outside edge at a 3&#8209;0 count, showing an 87.9% chance of a called strike."></a>
+      <figcaption>The demo: a four-seamer on the outside edge at 3&#8209;0.</figcaption>
     </figure>
 
     <h2>What's next</h2>
     <ul>
-      <li><strong>Pitch type, movement and catcher.</strong> A gradient-boosted model with those features, aimed at the edge band where the logistic model runs out.</li>
       <li><strong>Umpires.</strong> Statcast doesn't record the home-plate umpire. Joining it from the MLB Stats API would allow per-umpire zones.</li>
       <li><strong>ABS.</strong> How much did ABS change the edge? With the automated ball-strike challenge system in play in 2026, the 0–1 inch band is where to look: compare how often those pitches go each way before and after.</li>
+      <li><strong>Framing, done better.</strong> A per-season or pitch-level framing measure, to test whether catcher skill can be predicted ahead of time.</li>
     </ul>
 
     <div class="links">
@@ -172,7 +180,7 @@
       <a class="link-btn" href="https://github.com/chadreadey/mlb-pitch-classification">View code and methodology</a>
     </div>
 
-    <p class="note">This started as a 2023 class project with Carli Kelley and Garner Hasler. The Statcast rebuild, the demo and this write-up are my own work. Every number here comes from <code>scripts/baseline_logit.py</code> in the repository; the full output is in <code>results/baseline_logit.txt</code>.</p>
+    <p class="note">This started as a 2023 class project with Carli Kelley and Garner Hasler. The Statcast rebuild, both models, the demo and this write-up are my own work. Every number here comes from <code>scripts/baseline_logit.py</code> and <code>scripts/gbm.py</code> in the repository; full output is in <code>results/</code>.</p>
   </article>
 </main>
 
